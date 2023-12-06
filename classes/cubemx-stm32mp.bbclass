@@ -14,6 +14,9 @@ CUBEMX_DTB_PATH ??= ""
 # Component path to copy CubeMX device tree file
 CUBEMX_DTB_SRC_PATH ??= ""
 
+# M33 co-processor is used with Trustzone enabled or not
+CUBEMX_M33_TZ ??= "1"
+
 # Internal class variable to manage CubeMX file location:
 #   CUBEMX_PROJECT_ABS
 #       Absolute path to CubeMX project generated device tree files, initialized
@@ -30,6 +33,9 @@ CONFIGURE_FILES += "${@' '.join(map(str, ('${CUBEMX_DTB_PATH_FULL}'+'/'+f for f 
 # Append to EXTERNALSRC_SYMLINKS var the CubeMX device tree config to manage
 # symlink creation through externalsrc class
 EXTERNALSRC_SYMLINKS += "${@' '.join(map(str, ('${CUBEMX_DTB_SRC_PATH}'+'/'+f+':'+'${CUBEMX_DTB_PATH_FULL}'+'/'+f for f in os.listdir('${CUBEMX_DTB_PATH_FULL}')))) if os.path.isdir(d.getVar('CUBEMX_DTB_PATH_FULL')) else ''}"
+
+# internal, for M33_TZ, we need to update the dependency variable
+M33PROJECT_TF_M_TRUSTZONE = "${CUBEMX_M33_TZ}"
 
 python __anonymous() {
     if d.getVar('ENABLE_CUBEMX_DTB') == "0":
